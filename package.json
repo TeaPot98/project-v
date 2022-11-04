@@ -1,0 +1,30 @@
+{
+  "name": "project-v",
+  "version": "0.0.1",
+  "packageManager": "yarn@3.2.4",
+  "main": "index.ts",
+  "scripts": {
+    "tsc": "tsc",
+    "prepare": "husky install",
+    "ts-node": "ts-node",
+    "build": "rm -rf dist && webpack --mode=development"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "ts-loader": "^9.4.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
