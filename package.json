@@ -3,11 +3,16 @@
   "version": "0.0.1",
   "packageManager": "yarn@3.2.4",
   "main": "index.ts",
+  "type": "module",
+  "installConfig": {
+    "pnp": true
+  },
   "scripts": {
     "tsc": "tsc",
     "prepare": "husky install",
     "ts-node": "ts-node",
-    "build": "rm -rf dist && webpack --mode=development"
+    "build": "rm -rf dist && webpack --mode=development",
+    "dev": "yarn node index.ts"
   },
   "dependencies": {
     "express": "^4.18.2"
