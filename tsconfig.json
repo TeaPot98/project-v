@@ -5,6 +5,7 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
+    "baseUrl": "./",
     "target": "es5" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "module": "ES2022" /* Specify what module code is generated. */,
     // "noEmit": true /* Disable emitting files from a compilation. */,
@@ -24,9 +25,9 @@
     // "emitDeclarationOnly": true,
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true,
-    "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
-    "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
-    
+    "declarationMap": true /* Create sourcemaps for d.ts files. */,
+    "sourceMap": true /* Create source map files for emitted JavaScript files. */
+
     /* Projects */
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
     // "composite": true,                                /* Enable constraints that allow a TypeScript project to be used with project references. */
