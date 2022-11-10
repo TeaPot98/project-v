@@ -12,7 +12,11 @@
     "prepare": "husky install",
     "ts-node": "ts-node",
     "build": "rm -rf dist && webpack --mode=development",
-    "dev": "yarn node index.ts"
+    "dev": "yarn node index.ts",
+    "postinstall": "husky install",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable",
+    "lint": "eslint"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -27,8 +31,9 @@
     "@typescript-eslint/parser": "latest",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "lint-staged": "^13.0.3",
+    "pinst": "^3.0.0",
     "prettier": "^2.7.1",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
