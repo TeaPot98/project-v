@@ -3,11 +3,16 @@ import mongoose from "mongoose";
 import { removeMongoId } from "./utils";
 
 const patientSchema = new mongoose.Schema({
-  personalData: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Personal Data",
+    ref: "User",
   },
-  diagnosis: {},
+  fieldCategories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FieldCategory",
+    },
+  ],
 });
 
 export const Patient = mongoose.model("User", removeMongoId(patientSchema));
