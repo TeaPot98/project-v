@@ -3,57 +3,54 @@ import jwt from "jsonwebtoken";
 import { Router } from "express";
 import { JWT_SECRET } from "utils";
 import { User } from "models";
+import { CredentialsError, UserExistsError } from "utils/errors";
 
 export const authRouter = Router();
 
-authRouter.post("/register", async (req, res) => {
-  const { email, name, surname, role, password } = req.body;
+authRouter.post("/register", async (req, res, next) => {
+  try {
+    const { email, name, surname, role, password } = req.body;
 
-  if ((await User.findOne(email)) !== null) {
-    res.status(401).json({
-      error: "user with this email already exists",
-    });
-    return;
+    const existentUser = await User.findOne({ email });
+    if (existentUser) {
+      throw new UserExistsError();
+    }
+
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    const user = new User({ email, name, surname, role, passwordHash });
+    const savedUser = await user.save();
+
+    const { passwordHash: _, ...userWithoutHash } = JSON.parse(
+      JSON.stringify(savedUser)
+    );
+    res.json(userWithoutHash);
+  } catch (error) {
+    next(error);
   }
-
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
-
-  const user = new User({
-    email,
-    name,
-    surname,
-    role,
-    passwordHash,
-  });
-  const savedUser = await user.save();
-
-  res.json({
-    id: savedUser.id,
-    email: savedUser.email,
-    name: savedUser.email,
-    surname: savedUser.surname,
-    role: savedUser.role,
-  });
 });
 
-authRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+authRouter.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  const credentialsCorrect =
-    user !== null && (await bcrypt.compare(password, user.passwordHash));
+    const credentialsCorrect =
+      user !== null && (await bcrypt.compare(password, user.passwordHash));
 
-  if (!credentialsCorrect) {
-    res.status(401).json({
-      error: "wrong email or password",
-    });
-    return;
+    if (!credentialsCorrect) {
+      throw new CredentialsError();
+    }
+
+    const { passwordHash, ...userWithoutHash } = JSON.parse(
+      JSON.stringify(user)
+    );
+    const token = jwt.sign(userWithoutHash, JWT_SECRET);
+
+    res.json({ ...userWithoutHash, token });
+  } catch (error) {
+    next(error);
   }
-
-  const { passwordHash, ...userWithoutHash } = JSON.parse(JSON.stringify(user));
-  const token = jwt.sign(userWithoutHash, JWT_SECRET);
-
-  res.json({ ...userWithoutHash, token });
 });

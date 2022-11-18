@@ -1,48 +1,73 @@
 import { Router } from "express";
 import { Patient } from "models";
+import { NotFoundError } from "utils/errors";
 
 export const patientsRouter = Router();
 
-patientsRouter.post("/", async (req, res) => {
-  const patient = req.body;
+patientsRouter.post("/", async (req, res, next) => {
+  try {
+    const patient = req.body;
 
-  const newPatient = new Patient(patient);
-  await newPatient.save();
+    const newPatient = new Patient(patient);
+    await newPatient.save();
 
-  res.json(newPatient);
-});
-
-patientsRouter.get("/", async (_req, res) => {
-  const patients = await Patient.find();
-  res.json(patients);
-});
-
-patientsRouter.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const patient = await Patient.findById(id);
-
-  if (patient) {
-    res.json(patient);
-  } else {
-    res.status(400).send("Patient not found");
+    res.json(newPatient);
+  } catch (err) {
+    next(err);
   }
 });
 
-patientsRouter.put("/:id", async (req, res) => {
-  const id = req.params.id;
-  const patient = req.body;
-
-  const updatedPatient = await Patient.findOneAndUpdate({ _id: id }, patient, {
-    new: true,
-  });
-
-  res.json(updatedPatient);
+patientsRouter.get("/", async (_req, res, next) => {
+  try {
+    const patients = await Patient.find();
+    res.json(patients);
+  } catch (err) {
+    next(err);
+  }
 });
 
-patientsRouter.delete("/:id", async (req, res) => {
-  const id = req.params.id;
+patientsRouter.get("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const patient = await Patient.findById(id);
 
-  await Patient.deleteOne({ _id: id });
+    if (patient) {
+      res.json(patient);
+    } else {
+      throw new NotFoundError("Patient not found");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
 
-  res.status(204).end();
+patientsRouter.put("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const patient = req.body;
+
+    const updatedPatient = await Patient.findOneAndUpdate(
+      { _id: id },
+      patient,
+      {
+        new: true,
+      }
+    );
+
+    res.json(updatedPatient);
+  } catch (err) {
+    next(err);
+  }
+});
+
+patientsRouter.delete("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    await Patient.deleteOne({ _id: id });
+
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
 });

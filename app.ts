@@ -8,6 +8,8 @@ import {
   logger,
   unknownEndpoint,
   errorHandler,
+  errorLogger,
+  failSaveHandler,
 } from "utils";
 import { authRouter, patientsRouter, patientTypesRouter } from "controllers";
 
@@ -30,6 +32,9 @@ app.use("/api/patients", patientsRouter);
 app.use("/api/patient-types", patientTypesRouter);
 
 app.use(unknownEndpoint);
+
+app.use(errorLogger);
 app.use(errorHandler);
+app.use(failSaveHandler);
 
 export default app;
