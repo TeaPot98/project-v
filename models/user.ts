@@ -5,6 +5,7 @@ import { formatMongoSchema } from "./utils";
 const userSchema = new mongoose.Schema({
   name: String,
   surname: String,
+  email: String,
   role: String,
   passwordHash: String,
 });

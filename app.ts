@@ -1,4 +1,5 @@
 import express, { Request } from "express";
+import mongoose from "mongoose";
 import cors from "cors";
 
 import {
@@ -8,8 +9,7 @@ import {
   unknownEndpoint,
   errorHandler,
 } from "utils";
-import { patientsRouter, patientTypesRouter } from "controllers";
-import mongoose from "mongoose";
+import { authRouter, patientsRouter, patientTypesRouter } from "controllers";
 
 const app = express();
 
@@ -25,6 +25,7 @@ app.use(cors<Request>());
 app.use(express.json());
 app.use(requestLogger);
 
+app.use("/api/auth", authRouter);
 app.use("/api/patients", patientsRouter);
 app.use("/api/patient-types", patientTypesRouter);
 
