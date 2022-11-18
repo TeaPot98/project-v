@@ -1,25 +1,13 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { logger } from "utils";
-import { CustomError } from "./errors";
-
-export const requestLogger = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  logger.info("Method:", req.method);
-  logger.info("Path:", req.path);
-  logger.info("Body:", req.body);
-  logger.info("---");
-  next();
-};
+import { CustomError } from "utils";
 
 export const unknownEndpoint = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.status(404).send({ error: "unknown endpoint" });
+  res.status(404).send({ error: "Unknown endpoint" });
 };
 
 export const errorLogger: ErrorRequestHandler = (err, req, res, next) => {

@@ -2,15 +2,14 @@ import express, { Request } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import { MONGODB_URI, logger } from "utils";
 import {
-  MONGODB_URI,
   requestLogger,
-  logger,
   unknownEndpoint,
-  errorHandler,
   errorLogger,
+  errorHandler,
   failSaveHandler,
-} from "utils";
+} from "middleware";
 import { authRouter, patientsRouter, patientTypesRouter } from "controllers";
 
 const app = express();
