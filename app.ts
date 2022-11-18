@@ -8,7 +8,7 @@ import {
   unknownEndpoint,
   errorHandler,
 } from "utils";
-import { patientsRouter } from "controllers";
+import { patientsRouter, patientTypesRouter } from "controllers";
 import mongoose from "mongoose";
 
 const app = express();
@@ -26,6 +26,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use("/api/patients", patientsRouter);
+app.use("/api/patient-types", patientTypesRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

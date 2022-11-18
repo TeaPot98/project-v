@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 import { formatMongoSchema } from "./utils";
 
 const patientTypeSchema = new mongoose.Schema({
@@ -9,7 +10,7 @@ const patientTypeSchema = new mongoose.Schema({
       name: String,
       fields: [
         {
-          type: String,
+          type: { type: String },
           name: String,
         },
       ],
