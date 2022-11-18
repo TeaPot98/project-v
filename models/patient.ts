@@ -10,13 +10,11 @@ const patientSchema = new mongoose.Schema({
   },
   fieldGroups: [
     {
-      id: mongoose.Types.ObjectId,
       name: String,
       fields: [
         {
-          id: mongoose.Types.ObjectId,
           name: String,
-          type: String,
+          type: { type: String },
           // TODO: Change later depending on requirements
           content: Object,
         },

@@ -1,37 +1,17 @@
 import { Router } from "express";
-
-import { Patient } from "types";
-
-let patients: Patient[] = [
-  {
-    id: 1,
-    name: "Ion",
-    surname: "Ciobanu",
-    description: "Cefalee, vertij",
-  },
-  {
-    id: 2,
-    name: "Ion",
-    surname: "Ciobanu",
-    description: "Cefalee, vertij",
-  },
-  {
-    id: 3,
-    name: "Ion",
-    surname: "Ciobanu",
-    description: "Cefalee, vertij",
-  },
-];
+import { Patient } from "models";
 
 export const patientsRouter = Router();
 
-patientsRouter.get("/", (_req, res) => {
+patientsRouter.get("/", async (_req, res) => {
+  const patients = await Patient.find();
+
   res.json(patients);
 });
 
-patientsRouter.get("/:id", (req, res) => {
+patientsRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
-  const patient = patients.find((p) => p.id.toString() === id);
+  const patient = await Patient.findById(id);
 
   if (patient) {
     res.json(patient);
@@ -40,20 +20,19 @@ patientsRouter.get("/:id", (req, res) => {
   }
 });
 
-patientsRouter.delete("/:id", (req, res) => {
+patientsRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
-  patients = patients.filter((p) => p.id.toString() !== id);
+  await Patient.deleteOne({ _id: id });
 
   res.status(204).end();
 });
 
-patientsRouter.post("/", (req, res) => {
-  const patient = req.body as Patient;
+patientsRouter.post("/", async (req, res) => {
+  const patient = req.body;
 
-  const newPatient: Patient = { ...patient, id: patients.length + 1 };
-
-  patients = patients.concat(newPatient);
+  const newPatient = new Patient({ ...patient });
+  await newPatient.save();
 
   res.json(newPatient);
 });

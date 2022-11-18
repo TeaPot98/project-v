@@ -6,11 +6,9 @@ const patientTypeSchema = new mongoose.Schema({
   name: String,
   fieldGroups: [
     {
-      id: mongoose.Types.ObjectId,
       name: String,
       fields: [
         {
-          id: mongoose.Types.ObjectId,
           type: String,
           name: String,
         },

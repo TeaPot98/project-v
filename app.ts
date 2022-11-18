@@ -1,7 +1,13 @@
 import express, { Request } from "express";
 import cors from "cors";
 
-import { MONGODB_URI, requestLogger, logger } from "utils";
+import {
+  MONGODB_URI,
+  requestLogger,
+  logger,
+  unknownEndpoint,
+  errorHandler,
+} from "utils";
 import { patientsRouter } from "controllers";
 import mongoose from "mongoose";
 
@@ -20,5 +26,8 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use("/api/patients", patientsRouter);
+
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 export default app;
