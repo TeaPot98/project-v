@@ -1,18 +1,31 @@
 import mongoose from "mongoose";
 
-import { removeMongoId } from "./utils";
+import { formatMongoSchema } from "./utils";
 
 const patientSchema = new mongoose.Schema({
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    name: String,
+    surname: String,
+    id: mongoose.Schema.Types.ObjectId,
   },
-  fieldCategories: [
+  fieldGroups: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "FieldCategory",
+      id: mongoose.Types.ObjectId,
+      name: String,
+      fields: [
+        {
+          id: mongoose.Types.ObjectId,
+          name: String,
+          type: String,
+          // TODO: Change later depending on requirements
+          content: Object,
+        },
+      ],
     },
   ],
 });
 
-export const Patient = mongoose.model("User", removeMongoId(patientSchema));
+export const Patient = mongoose.model(
+  "Patient",
+  formatMongoSchema(patientSchema)
+);

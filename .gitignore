@@ -10,8 +10,8 @@
 # !.yarn/cache
 .pnp.*
 
-node_modules
-dist
-lib
-out
+node_modules/
+dist/
+lib/
+out/
 .env

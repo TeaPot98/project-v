@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-export const removeMongoId = (mongoSchema: Schema) => {
+export const formatMongoSchema = (mongoSchema: Schema) => {
   mongoSchema.set("toJSON", {
     transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString();
