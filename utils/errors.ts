@@ -34,12 +34,6 @@ export class NotFoundError extends CustomError {
   }
 }
 
-export class TokenInvalidError extends BadRequestError {
-  constructor() {
-    super("Token missing or invalid");
-  }
-}
-
 export class UserExistsError extends UnauthorizedError {
   constructor() {
     super("User with this email already exists");
