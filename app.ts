@@ -9,7 +9,8 @@ import {
   errorLogger,
   errorHandler,
   failSaveHandler,
-} from "middleware";
+  tokenValidator,
+} from "middlewares";
 import { authRouter, patientsRouter, patientTypesRouter } from "controllers";
 
 const app = express();
@@ -27,6 +28,9 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use("/api/auth", authRouter);
+
+app.use(tokenValidator);
+
 app.use("/api/patients", patientsRouter);
 app.use("/api/patient-types", patientTypesRouter);
 

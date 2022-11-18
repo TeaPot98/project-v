@@ -51,3 +51,9 @@ export class CredentialsError extends UnauthorizedError {
     super("Wrong email or password");
   }
 }
+
+export class InvalidTokenError extends UnauthorizedError {
+  constructor() {
+    super("Invalid or missing token");
+  }
+}

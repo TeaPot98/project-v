@@ -1,14 +1,16 @@
 import { Router } from "express";
 import { Patient } from "models";
-import { NotFoundError } from "utils/errors";
+import { Roles } from "types";
+import { getPatient, getUser } from "utils";
+import { ForbiddenError } from "utils/errors";
 
 export const patientsRouter = Router();
 
 patientsRouter.post("/", async (req, res, next) => {
   try {
-    const patient = req.body;
+    const payload = req.body;
 
-    const newPatient = new Patient(patient);
+    const newPatient = new Patient(payload);
     await newPatient.save();
 
     res.json(newPatient);
@@ -29,13 +31,9 @@ patientsRouter.get("/", async (_req, res, next) => {
 patientsRouter.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const patient = await Patient.findById(id);
+    const patient = await getPatient(id);
 
-    if (patient) {
-      res.json(patient);
-    } else {
-      throw new NotFoundError("Patient not found");
-    }
+    res.json(patient);
   } catch (err) {
     next(err);
   }
@@ -43,16 +41,16 @@ patientsRouter.get("/:id", async (req, res, next) => {
 
 patientsRouter.put("/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const patient = req.body;
+    const { role: userRole, id: userId } = await getUser(req);
+    const patientId = req.params.id;
+    const payload = req.body;
 
-    const updatedPatient = await Patient.findOneAndUpdate(
-      { _id: id },
-      patient,
-      {
-        new: true,
-      }
-    );
+    const oldPatient = await getPatient(patientId);
+
+    if (userRole === Roles.USER && oldPatient.author.id !== userId)
+      throw new ForbiddenError();
+
+    const updatedPatient = await oldPatient.update(payload);
 
     res.json(updatedPatient);
   } catch (err) {
@@ -62,9 +60,12 @@ patientsRouter.put("/:id", async (req, res, next) => {
 
 patientsRouter.delete("/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { role: userRole, id: userId } = await getUser(req);
+    const patientId = req.params.id;
 
-    await Patient.deleteOne({ _id: id });
+    const patient = await getPatient(patientId);
+    if (userRole === Roles.USER && patient.author.id !== userId)
+      throw new ForbiddenError();
 
     res.status(204).end();
   } catch (err) {
