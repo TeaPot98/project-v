@@ -15,7 +15,7 @@ import { Roles, TokenUser } from "types";
 
 export const authRouter = Router();
 
-authRouter.post("/register", async (req, res, next) => {
+authRouter.post("/signup", async (req, res, next) => {
   try {
     const { username, name, surname, role, password } = req.body;
     const token = getToken(req);
