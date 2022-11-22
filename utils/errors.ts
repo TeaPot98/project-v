@@ -42,7 +42,7 @@ export class UserExistsError extends UnauthorizedError {
 
 export class CredentialsError extends UnauthorizedError {
   constructor() {
-    super("Wrong email or password");
+    super("Wrong username or password");
   }
 }
 
