@@ -64,3 +64,30 @@ authRouter.post("/login", async (req, res, next) => {
     next(err);
   }
 });
+
+authRouter.post("/change-password", async (req, res, next) => {
+  try {
+    const { username, password, newPassword } = req.body;
+
+    const user = await User.findOne({ username });
+
+    const credentialsCorrect =
+      user !== null && (await bcrypt.compare(password, user.passwordHash));
+
+    if (!credentialsCorrect) throw new CredentialsError();
+
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+    user.passwordHash = passwordHash;
+    const savedUser = await user.save();
+
+    const { passwordHash: _, ...userWithoutHash } = JSON.parse(
+      JSON.stringify(savedUser)
+    );
+    const token = jwt.sign(userWithoutHash, JWT_SECRET);
+
+    res.json({ ...userWithoutHash, token });
+  } catch (err) {
+    next(err);
+  }
+});
