@@ -12,7 +12,9 @@ export const formatMongoSchema = (mongoSchema: Schema) => {
   return mongoSchema;
 };
 
-// Replaces "_id" with "id" for all schema props
+/**
+ * Replaces "_id" with "id" for all schema props
+ */
 const formatMongoId = (object: any) => {
   for (const key in object) {
     if (object[key] instanceof Array) {
@@ -24,4 +26,14 @@ const formatMongoId = (object: any) => {
       delete object._id;
     }
   }
+};
+
+/**
+ * Take mongoose User document, extract user without hash, and return it
+ */
+export const removePasswordHash = (user: any) => {
+  const { passwordHash: _, ...userWithoutPasswordHash } = JSON.parse(
+    JSON.stringify(user)
+  );
+  return userWithoutPasswordHash;
 };

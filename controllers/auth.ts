@@ -12,6 +12,7 @@ import {
 } from "utils";
 import { User } from "models";
 import { Roles, TokenUser } from "types";
+import { removePasswordHash } from "models/utils";
 
 export const authRouter = Router();
 
@@ -34,10 +35,7 @@ authRouter.post("/signup", async (req, res, next) => {
     const user = new User({ username, name, surname, role, passwordHash });
     const savedUser = await user.save();
 
-    const { passwordHash: _, ...userWithoutHash } = JSON.parse(
-      JSON.stringify(savedUser)
-    );
-    res.json(userWithoutHash);
+    res.json(removePasswordHash(savedUser));
   } catch (err) {
     next(err);
   }
@@ -54,9 +52,7 @@ authRouter.post("/login", async (req, res, next) => {
 
     if (!credentialsCorrect) throw new CredentialsError();
 
-    const { passwordHash, ...userWithoutHash } = JSON.parse(
-      JSON.stringify(user)
-    );
+    const userWithoutHash = removePasswordHash(user);
     const token = jwt.sign(userWithoutHash, JWT_SECRET);
 
     res.json({ ...userWithoutHash, token });
@@ -81,9 +77,7 @@ authRouter.post("/change-password", async (req, res, next) => {
     user.passwordHash = passwordHash;
     const savedUser = await user.save();
 
-    const { passwordHash: _, ...userWithoutHash } = JSON.parse(
-      JSON.stringify(savedUser)
-    );
+    const userWithoutHash = removePasswordHash(savedUser);
     const token = jwt.sign(userWithoutHash, JWT_SECRET);
 
     res.json({ ...userWithoutHash, token });
