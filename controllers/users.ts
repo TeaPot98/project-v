@@ -1,9 +1,10 @@
 import { Router } from "express";
+
 import { getUser } from "utils";
 
-export const loggedUserRouter = Router();
+export const usersRouter = Router();
 
-loggedUserRouter.get("/", async (req, res, next) => {
+usersRouter.get("/logged", async (req, res, next) => {
   try {
     const user = await getUser(req);
     res.json(user);

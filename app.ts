@@ -15,7 +15,7 @@ import {
   authRouter,
   patientsRouter,
   patientTypesRouter,
-  loggedUserRouter,
+  usersRouter,
 } from "controllers";
 
 const app = express();
@@ -35,8 +35,8 @@ app.use(requestLogger);
 app.use("/api/auth", authRouter);
 
 app.use(tokenValidator);
-app.use("/api/logged-user", loggedUserRouter);
 
+app.use("/api/users", usersRouter);
 app.use("/api/patients", patientsRouter);
 app.use("/api/patient-types", patientTypesRouter);
 
