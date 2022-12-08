@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { formatMongoSchema } from "./utils";
 
 const patientTypeSchema = new mongoose.Schema({
-  author: { name: String, surname: String, id: mongoose.Schema.Types.ObjectId },
+  author: { name: String, surname: String, id: String },
   name: String,
   fieldGroups: [
     {

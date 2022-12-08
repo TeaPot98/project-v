@@ -48,7 +48,7 @@ patientsRouter.put("/:id", async (req, res, next) => {
     const oldPatient = await getPatient(patientId);
 
     if (
-      (userRole !== Roles.ADMIN || userRole !== Roles.MODERATOR) &&
+      !(userRole === Roles.ADMIN || userRole === Roles.MODERATOR) &&
       oldPatient.author.id !== userId
     )
       throw new ForbiddenError();
@@ -68,7 +68,7 @@ patientsRouter.delete("/:id", async (req, res, next) => {
 
     const patient = await getPatient(patientId);
     if (
-      (userRole !== Roles.ADMIN || userRole !== Roles.MODERATOR) &&
+      !(userRole === Roles.ADMIN || userRole === Roles.MODERATOR) &&
       patient.author.id !== userId
     )
       throw new ForbiddenError();
