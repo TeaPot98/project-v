@@ -73,6 +73,8 @@ patientsRouter.delete("/:id", async (req, res, next) => {
     )
       throw new ForbiddenError();
 
+    await Patient.findByIdAndDelete(patient.id);
+
     res.status(204).end();
   } catch (err) {
     next(err);
