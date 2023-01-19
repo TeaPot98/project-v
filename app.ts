@@ -27,6 +27,7 @@ mongoose
   })
   .catch((err) => logger.error("error connecting to MongoDB", err.message));
 
+app.use(express.static("build"));
 app.use(cors<Request>());
 
 app.use(express.json());
