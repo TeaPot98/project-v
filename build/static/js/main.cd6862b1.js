@@ -1,4 +1,4 @@
-/*! For license information please see main.c2d87fd0.js.LICENSE.txt */
+/*! For license information please see main.cd6862b1.js.LICENSE.txt */
 !(function () {
   var e = {
       3361: function (e, t, n) {
@@ -31715,7 +31715,7 @@
           Ad.isAxiosError,
           Ad.spread,
           Ad.toFormData,
-          Ad.create({ baseURL: "http://localhost:3001/api/" })),
+          Ad.create({ baseURL: "/api/" })),
         Fd = function (e) {
           Nd.interceptors.request.use(function (t) {
             return t && t.headers
@@ -46301,4 +46301,4 @@
         jt();
     })();
 })();
-//# sourceMappingURL=main.c2d87fd0.js.map
+//# sourceMappingURL=main.cd6862b1.js.map
