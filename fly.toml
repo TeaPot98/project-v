@@ -1,12 +1,9 @@
-# fly.toml file generated for cool-forest-7983 on 2023-01-17T22:52:29+02:00
+# fly.toml file generated for summer-bush-7025 on 2023-01-19T23:56:14+02:00
 
-app = "cool-forest-7983"
+app = "summer-bush-7025"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
-
-[build]
-  builder = "heroku/buildpacks:20"
 
 [env]
   PORT = "8080"
