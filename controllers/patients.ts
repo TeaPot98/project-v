@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Patient } from "models";
 import { Roles } from "types";
-import { getPatient, getUser } from "utils";
+import { getPatient, getLoggedUser } from "utils";
 import { ForbiddenError } from "utils/errors";
 
 export const patientsRouter = Router();
@@ -41,7 +41,7 @@ patientsRouter.get("/:id", async (req, res, next) => {
 
 patientsRouter.put("/:id", async (req, res, next) => {
   try {
-    const { role: userRole, id: userId } = await getUser(req);
+    const { role: userRole, id: userId } = await getLoggedUser(req);
     const patientId = req.params.id;
     const payload = req.body;
 
@@ -63,7 +63,7 @@ patientsRouter.put("/:id", async (req, res, next) => {
 
 patientsRouter.delete("/:id", async (req, res, next) => {
   try {
-    const { role: userRole, id: userId } = await getUser(req);
+    const { role: userRole, id: userId } = await getLoggedUser(req);
     const patientId = req.params.id;
 
     const patient = await getPatient(patientId);
