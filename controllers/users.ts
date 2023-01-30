@@ -34,11 +34,11 @@ usersRouter.delete("/:id", async (req, res, next) => {
     const { role: userRole } = await getLoggedUser(req);
     const userToDeleteId = req.params.id;
 
-    const patient = await getUser(userToDeleteId);
-    if (!(userRole === Roles.ADMIN || userRole === Roles.MODERATOR))
+    const user = await getUser(userToDeleteId);
+    if (!(userRole === Roles.ADMIN || userRole === Roles.MODERATOR) || user.role === Roles.ADMIN)
       throw new ForbiddenError();
 
-    await User.findByIdAndDelete(patient.id);
+    await User.findByIdAndDelete(user.id);
 
     res.status(204).end();
   } catch (err) {
